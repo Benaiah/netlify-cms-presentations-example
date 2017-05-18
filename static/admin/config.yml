@@ -1,8 +1,10 @@
 backend:
   name: github
-  
+  repo: benaiah/reveal-md-netlify-cms
+  branch: master
 
 media_folder: "static/assets/uploads/"
+public_folder: "assets/uploads"
 
 collections:
   - name: presentations
