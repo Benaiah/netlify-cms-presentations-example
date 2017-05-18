@@ -1,0 +1,15 @@
+{
+  "name": "reveal-js-netlify-cms",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "netlify-cms": "^0.4.0",
+    "reveal-md": "^0.3.0"
+  }
+}

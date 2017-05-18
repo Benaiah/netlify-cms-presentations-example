@@ -1,0 +1,47 @@
+backend:
+  name: github
+  
+
+media_folder: "static/assets/uploads/"
+
+collections:
+  - name: presentations
+    label: Presentation
+    folder: presentations
+    slug: "{{slug}}"
+    create: true
+    fields:
+      - {label: Title, name: title, widget: string, tagname: ""}
+
+      - label: Theme
+        name: theme
+        widget: select
+        options:
+          - beige
+          - black
+          - blood
+          - league
+          - moon
+          - night
+          - serif
+          - simple
+          - sky
+          - solarized
+          - white
+
+      - label: Body
+        name: body
+        widget: markdown
+
+      # - label: "Reveal Options"
+      #   name: revealOptions
+      #   required: false
+      #   fields:
+#          - {label: "Show Controls",             name: controls, required: false, widget: boolean, defaultValue: true}
+#          - {label: "Show Progress Bar",         name: progress, required: false, widget: boolean, defaultValue: true}
+#          - {label: "Change Browser History",    name: history,  required: false, widget: boolean, defaultValue: false}
+#          - {label: "Keyboard Shortcuts",        name: keyboard, required: false, widget: boolean, defaultValue: true}
+#          - {label: "Enable Overview Mode",      name: overview, required: false, widget: boolean, defaultValue: true}
+#          - {label: "Vertically Center Slides",  name: center,   required: false, widget: boolean, defaultValue: true}
+#          - {label: "Loop Presentation",         name: loop,     required, false, widget: boolean, defaultValue: true}
+#          - {label: ""}
