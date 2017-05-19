@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist; cp -r ./static ./dist"
+    "build": "node build.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "del": "^2.2.2",
+    "handlebars": "^4.0.8",
+    "mz": "^2.6.0",
     "netlify-cms": "^0.4.0",
+    "recursive-copy": "^2.0.6",
     "reveal-md": "^0.3.0"
   }
 }

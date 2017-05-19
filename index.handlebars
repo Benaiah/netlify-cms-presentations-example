@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <ul>
+      {{#each presentations}}
+        <li>
+          <div class="presentation-title">
+            <a href="/presentations/{{slug}}/">{{title}}</a>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </body>
+</html>
