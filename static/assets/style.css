@@ -1,0 +1,27 @@
+html {
+  background: #222;
+}
+
+body {
+  max-width: 20em;
+  margin-left: auto;
+  margin-right: auto;
+
+  color: #eee;
+  font-family: sans-serif;
+  font-size: 1.2em;
+  line-height: 1.4em;
+}
+
+a {
+  color: lightblue;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
