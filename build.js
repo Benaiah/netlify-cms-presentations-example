@@ -22,8 +22,9 @@ const cleanDirectory = dir => {
   throw new Error("Bad directory name.");
 };
 
+// Copies static folder to dist
 const copyOptions = { overwrite: true };
-const copyAssets = () =>
+const copyStatic = () =>
   copy("./static", "./dist", copyOptions)
     // Notifications of copy progress
     .on(copy.events.COPY_FILE_START, copyOperation =>
@@ -35,20 +36,23 @@ const copyAssets = () =>
     .on(copy.events.ERROR, (error, copyOperation) =>
       console.error(`Unable to copy to ${copyOperation.dest}`)
     )
-    // Notify of success or failure
+    // Notification of success or failure
     .then(results => console.info(`${results.length} file(s) copied`))
     .catch(err => console.error(`Copy failed: ${err}`));
 
+// Gets a list of the presentation files
 const getPresentations = () =>
   fs
     .readdir("./presentations")
     .then(files => files.filter(file => path.parse(file).ext === ".md"));
 
+// Calls reveal-md to create the presentations
 const createPresentation = (presentationPath, dest) =>
   cleanDirectory(dest).then(() =>
     exec(`./node_modules/.bin/reveal-md ${presentationPath} --static ${dest}`)
   );
 
+// Creates the presentations concurrently
 const createPresentations = () =>
   getPresentations().then(files =>
     Promise.all(
@@ -66,6 +70,7 @@ const createPresentations = () =>
     )
   );
 
+// Reads and compiles the index.handlebars file into a template
 const getIndexPageTemplate = () =>
   fs
     .readFile("index.handlebars", "utf8")
@@ -78,7 +83,7 @@ const createIndexPage = data =>
 
 const build = config =>
   cleanDirectory("dist")
-    .then(copyAssets)
+    .then(copyStatic)
     .then(() => cleanDirectory("dist/presentations"))
     .then(createPresentations)
     .then(slugs =>
