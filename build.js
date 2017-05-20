@@ -73,7 +73,7 @@ const createPresentations = () =>
 // Reads and compiles the index.handlebars file into a template
 const getIndexPageTemplate = () =>
   fs
-    .readFile("index.handlebars", "utf8")
+    .readFile("./src/index.handlebars", "utf8")
     .then(contents => Handlebars.compile(contents));
 
 const createIndexPage = data =>
