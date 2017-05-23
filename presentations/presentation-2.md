@@ -6,7 +6,7 @@ theme: night
 
 this is the first slide
 
----
+<!--s-->
 
 ```
 This slide has code on it!
