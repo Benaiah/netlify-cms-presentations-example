@@ -33,7 +33,7 @@ collections:
 
       - label: Body
         name: body
-        widget: markdown
+        widget: slides
 
       # - label: "Reveal Options"
       #   name: revealOptions
