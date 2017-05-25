@@ -1,9 +1,15 @@
 const copy = require("recursive-copy");
 const del = require("del");
 const exec = require("mz/child_process").exec;
+const spawn = require("mz/child_process").spawn;
 const fs = require("mz/fs");
 const Handlebars = require("handlebars");
 const path = require("path");
+
+const runScript = (script, args=[]) =>
+  new Promise((resolve, reject) => {
+    const scriptProcess = spawn("npm", ["run", script].concat(args), { stdio: "inherit" });
+  });
 
 // Reads the site settings
 const readConfig = configPath =>
@@ -40,6 +46,8 @@ const copyStatic = () =>
     .then(results => console.info(`${results.length} file(s) copied`))
     .catch(err => console.error(`Copy failed: ${err}`));
 
+const compileJS = () => runScript("compile-js");
+
 // Gets a list of the presentation files
 const getPresentations = () =>
   fs
@@ -49,7 +57,7 @@ const getPresentations = () =>
 // Calls reveal-md to create the presentations
 const createPresentation = (presentationPath, dest) =>
   cleanDirectory(dest).then(() =>
-    exec(`./node_modules/.bin/reveal-md ${presentationPath} --static ${dest}`)
+    runScript("compile-presentation", [presentationPath, "--static", dest])
   );
 
 // Creates the presentations concurrently
@@ -84,6 +92,7 @@ const createIndexPage = data =>
 const build = config =>
   cleanDirectory("dist")
     .then(copyStatic)
+    .then(compileJS)
     .then(() => cleanDirectory("dist/presentations"))
     .then(createPresentations)
     .then(slugs =>
