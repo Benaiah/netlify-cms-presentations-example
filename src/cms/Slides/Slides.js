@@ -73,7 +73,8 @@ const SlidePreview = props => {
   return <div><hr /><MarkdownPreview {...props} /></div>;
 };
 
-const slideSeparator = "<!--s-->";
+const slideSeparator = "\n<!--s-->\n";
+const slideSeparatorRegex = /\n?<!--s-->\n?/
 
 const getSlideActions = (onChange, slides, i) => {
   const slidesCopy = slides.slice();
@@ -120,7 +121,7 @@ export class SlidesControl extends Component {
   }
 
   handleSlideChange(value, i) {
-    const newValues = this.props.value.split(slideSeparator);
+    const newValues = this.props.value.split(slideSeparatorRegex);
     newValues[i] = value;
     console.log(newValues.join(slideSeparator));
     this.props.onChange(newValues.join(slideSeparator));
@@ -128,7 +129,7 @@ export class SlidesControl extends Component {
 
   slideControlsFromMarkdown(markdown) {
     return markdown
-      .split(slideSeparator)
+      .split(slideSeparatorRegex)
       .map((slideContent, i) => (
         <SlideControl
           key={i}
@@ -148,7 +149,7 @@ export class SlidesControl extends Component {
         console.log(slides);
         this.props.onChange(slides.join(slideSeparator));
       },
-      this.props.value.split(slideSeparator),
+      this.props.value.split(slideSeparatorRegex),
       i
     );
   }
@@ -165,7 +166,7 @@ export class SlidesControl extends Component {
 export const SlidesPreview = props => (
   <div>
     {props.value
-      .split(slideSeparator)
+      .split(slideSeparatorRegex)
       .map((val, i) => <SlidePreview key={i} value={val} />)}
   </div>
 );
