@@ -21,8 +21,22 @@ theme: night
 
 ```sh
 # yarn
-$ yarn add netlify-cms
+$ yarn add netlify-cms react
 
 # npm
-$ npm install --save netlify-cms
+$ npm install --save netlify-cms react
+```
+
+<!--s-->
+
+## Creating a new widget
+
+```js
+import React, { Component } from "react";
+
+const SlideControl = props => { ... }
+const SlidePreview = props => { ... }
+
+export class SlidesControl extends Component { ... }
+export const SlidesPreview = props => { ... }
 ```
