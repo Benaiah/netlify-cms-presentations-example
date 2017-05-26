@@ -40,32 +40,21 @@ const SlideCommandBar = props => (
   </CommandBar>
 );
 
-class SlideControl extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  handleChange(e) {
-    console.log(e.target.value);
-    this.props.onChange(e.target.value);
-  }
-
-  render() {
-    const MarkdownControl = CMS.getWidget("markdown").control;
-    return (
-      <div>
-        <h1>Slide</h1>
-        <SlideCommandBar {...this.props.commandBarActions} />
-        <MarkdownControl
-          value={this.props.value}
-          onChange={this.props.onChange}
-          onAddAsset={this.props.onAddAsset}
-          onRemoveAsset={this.props.onRemoveAsset}
-          getAsset={this.props.getAsset}
-        />
-      </div>
-    );
-  }
+const SlideControl = props => {
+  const MarkdownControl = CMS.getWidget("markdown").control;
+  return (
+    <div>
+      <h3>Slide</h3>
+      <SlideCommandBar {...props.commandBarActions} />
+      <MarkdownControl
+        value={props.value}
+        onChange={props.onChange}
+        onAddAsset={props.onAddAsset}
+        onRemoveAsset={props.onRemoveAsset}
+        getAsset={props.getAsset}
+      />
+    </div>
+  );
 }
 
 const SlidePreview = props => {
@@ -73,29 +62,25 @@ const SlidePreview = props => {
   return <div><hr /><MarkdownPreview {...props} /></div>;
 };
 
-const slideSeparator = "\n<!--s-->\n";
-const slideSeparatorRegex = /\n?<!--s-->\n?/
+const slideSeparator = "\n\n<!--s-->\n\n";
+const slideSeparatorRegex = /\n\n<!--s-->\n\n/
 
 const getSlideActions = (onChange, slides, i) => {
   const slidesCopy = slides.slice();
   return {
     createSlideAbove: () => {
-      console.log(`createSlideAbove slides[${i}]: ${slides[i]}`);
       slidesCopy.splice(i, 1, "", slides[i]);
       return onChange(slidesCopy);
     },
     createSlideBelow: () => {
-      console.log(`createSlideBelow slides[${i}]: ${slides[i]}`);
       slidesCopy.splice(i + 1, 0, "");
       return onChange(slidesCopy);
     },
     deleteSlide: () => {
-      console.log(`deleteSlide slides[${i}]: ${slides[i]}`);
       slidesCopy.splice(i, 1);
       return onChange(slidesCopy);
     },
     moveSlideUp: () => {
-      console.log(`moveSlideUp slides[${i}]: ${slides[i]}`);
       if (i === 0) {
         return onChange(slides);
       }
@@ -103,7 +88,6 @@ const getSlideActions = (onChange, slides, i) => {
       return onChange(slidesCopy);
     },
     moveSlideDown: () => {
-      console.log(`moveSlideDown slides[${i}]: ${slides[i]}`);
       if (i === slides.length) {
         return onChange(slides);
       }
@@ -113,22 +97,23 @@ const getSlideActions = (onChange, slides, i) => {
   };
 };
 
-window.getSlideActions = getSlideActions;
-
 export class SlidesControl extends Component {
   constructor(props) {
     super(props);
   }
 
   handleSlideChange(value, i) {
-    const newValues = this.props.value.split(slideSeparatorRegex);
+    const newValues = this.getValue().split(slideSeparatorRegex);
     newValues[i] = value;
-    console.log(newValues.join(slideSeparator));
     this.props.onChange(newValues.join(slideSeparator));
   }
 
-  slideControlsFromMarkdown(markdown) {
-    return markdown
+  getValue () {
+    return (this.props.value) ? this.props.value : "";
+  }
+
+  getSlideControls() {
+    return this.getValue()
       .split(slideSeparatorRegex)
       .map((slideContent, i) => (
         <SlideControl
@@ -146,10 +131,9 @@ export class SlidesControl extends Component {
   getCommandBarFunctionsForSlide(i) {
     return getSlideActions(
       slides => {
-        console.log(slides);
         this.props.onChange(slides.join(slideSeparator));
       },
-      this.props.value.split(slideSeparatorRegex),
+      this.getValue().split(slideSeparatorRegex),
       i
     );
   }
@@ -157,7 +141,7 @@ export class SlidesControl extends Component {
   render() {
     return (
       <div>
-        {this.slideControlsFromMarkdown(this.props.value)}
+        {this.getSlideControls()}
       </div>
     );
   }
