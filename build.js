@@ -8,7 +8,6 @@ const path = require("path");
 
 const runScript = (script, args = []) =>
   new Promise((resolve, reject) => {
-    console.log("ARGS", args);
     spawn("npm", ["run", script, "--"].concat(args), { stdio: "inherit" }).on(
       "close",
       code => (code === 0 ? resolve(code) : reject(code))
@@ -90,7 +89,6 @@ const createIndexPage = data =>
   getIndexPageTemplate()
     .then(template => template(data))
     .then(page => {
-      console.log(page);
       return page;
     })
     .then(page => fs.writeFile("./dist/index.html", page, "utf8"));
@@ -102,7 +100,6 @@ const build = config =>
     .then(() => cleanDirectory("dist/presentations"))
     .then(createPresentations)
     .then(slugs => {
-      console.log(slugs);
       return createIndexPage({
         config,
         presentations: slugs.map(slug => ({ slug, title: slug }))
@@ -111,5 +108,4 @@ const build = config =>
 
 readConfig("./config.json")
   .then(build)
-  .then(console.log)
   .catch(err => console.error(err));
