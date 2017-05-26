@@ -6,9 +6,13 @@ const fs = require("mz/fs");
 const Handlebars = require("handlebars");
 const path = require("path");
 
-const runScript = (script, args=[]) =>
+const runScript = (script, args = []) =>
   new Promise((resolve, reject) => {
-    const scriptProcess = spawn("npm", ["run", script].concat(args), { stdio: "inherit" });
+    console.log("ARGS", args);
+    spawn("npm", ["run", script, "--"].concat(args), { stdio: "inherit" }).on(
+      "close",
+      code => (code === 0 ? resolve(code) : reject(code))
+    );
   });
 
 // Reads the site settings
@@ -56,9 +60,7 @@ const getPresentations = () =>
 
 // Calls reveal-md to create the presentations
 const createPresentation = (presentationPath, dest) =>
-  cleanDirectory(dest).then(() =>
-    runScript("compile-presentation", [presentationPath, "--static", dest])
-  );
+  runScript("compile-presentation", ["--static", dest, presentationPath]);
 
 // Creates the presentations concurrently
 const createPresentations = () =>
@@ -87,6 +89,10 @@ const getIndexPageTemplate = () =>
 const createIndexPage = data =>
   getIndexPageTemplate()
     .then(template => template(data))
+    .then(page => {
+      console.log(page);
+      return page;
+    })
     .then(page => fs.writeFile("./dist/index.html", page, "utf8"));
 
 const build = config =>
@@ -95,11 +101,15 @@ const build = config =>
     .then(compileJS)
     .then(() => cleanDirectory("dist/presentations"))
     .then(createPresentations)
-    .then(slugs =>
-      createIndexPage({
+    .then(slugs => {
+      console.log(slugs);
+      return createIndexPage({
         config,
         presentations: slugs.map(slug => ({ slug, title: slug }))
-      })
-    );
+      });
+    });
 
-readConfig("./config.json").then(build).catch(err => console.error(err));
+readConfig("./config.json")
+  .then(build)
+  .then(console.log)
+  .catch(err => console.error(err));
