@@ -4,28 +4,38 @@ import styled from "styled-components";
 const CommandBar = styled.div`
   display: flex;
   width: 100%;
+  margin-bottom: 10px;
+  justify-content: space-between;
 `;
 
 const CommandBarButton = styled.button`
   font-size: 12px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+
+  &:hover {
+    background: #ddd;
+  }
 `;
 
 const SlideCommandBar = props => (
   <CommandBar>
     <CommandBarButton onClick={props.createSlideAbove}>
-      New Slide Above
+      + Above
     </CommandBarButton>
     <CommandBarButton onClick={props.createSlideBelow}>
-      New Slide Below
+      + Below
     </CommandBarButton>
     <CommandBarButton onClick={props.deleteSlide}>
-      Delete Slide
+      Delete
     </CommandBarButton>
     <CommandBarButton onClick={props.moveSlideUp}>
-      Move Slide Up
+      Move Up
     </CommandBarButton>
     <CommandBarButton onClick={props.moveSlideDown}>
-      Move Slide Down
+      Move Down
     </CommandBarButton>
   </CommandBar>
 );
