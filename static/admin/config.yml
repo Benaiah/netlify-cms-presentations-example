@@ -34,6 +34,7 @@ collections:
       - label: Body
         name: body
         widget: slides
+        separator: "\n\n<!--s-->\n\n"
 
       # - label: "Reveal Options"
       #   name: revealOptions
